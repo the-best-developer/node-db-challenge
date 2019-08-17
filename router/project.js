@@ -31,4 +31,33 @@ router.get('/resource', async (req, res) => {
     }
 });
 
+// ##########
+//  Project
+// ##########
+
+// ##### POST #####
+router.post('/project', async (req, res) => {
+    const projectData = req.body;
+
+    try {
+        const addedProject = await db('project').insert(projectData);
+        res.json( addedProject ? addedProject : null );
+    }
+    catch (err) {
+        
+    }
+});
+
+// ##### GET #####
+router.get('/addedProject', async (req, res) => {
+    
+    try {
+        const projects = await db('project');
+        res.json(projects);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 module.exports = router;
