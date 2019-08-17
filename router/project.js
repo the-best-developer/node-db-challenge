@@ -15,7 +15,7 @@ router.post('/resource', async (req, res) => {
         res.json( addedResource ? addedResource : null );
     }
     catch (err) {
-        
+        res.status(500).json({ message: err.message });
     }
 });
 
@@ -44,16 +44,45 @@ router.post('/project', async (req, res) => {
         res.json( addedProject ? addedProject : null );
     }
     catch (err) {
-        
+        res.status(500).json({ message: err.message });
     }
 });
 
 // ##### GET #####
-router.get('/addedProject', async (req, res) => {
+router.get('/project', async (req, res) => {
     
     try {
         const projects = await db('project');
         res.json(projects);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// ##########
+//  Task
+// ##########
+
+// ##### POST #####
+router.post('/task', async (req, res) => {
+    const taskData = req.body;
+
+    try {
+        const addedTask = await db('task').insert(taskData);
+        res.json( addedTask ? addedTask : null );
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// ##### GET #####
+router.get('/task', async (req, res) => {
+    
+    try {
+        const tasks = await db('task');
+        res.json(tasks);
     }
     catch (err) {
         res.status(500).json({ message: err.message });
