@@ -53,7 +53,13 @@ router.get('/project', async (req, res) => {
     
     try {
         const projects = await db('project');
-        res.json(projects);
+        
+        res.json(
+            projects.map((project) => {
+                project.completed = !!project.completed;
+                return project;
+            })
+        );
     }
     catch (err) {
         res.status(500).json({ message: err.message });
@@ -81,8 +87,14 @@ router.post('/task', async (req, res) => {
 router.get('/task', async (req, res) => {
     
     try {
-        const tasks = await db('task');
-        res.json(tasks);
+        let tasks = await db('task');
+        
+        res.json(
+            tasks.map((task) => {
+                task.completed = !!task.completed;
+                return task;
+            })
+        );
     }
     catch (err) {
         res.status(500).json({ message: err.message });
