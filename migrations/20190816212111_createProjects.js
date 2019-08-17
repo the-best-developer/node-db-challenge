@@ -9,7 +9,6 @@ exports.up = function(knex) {
             .notNullable();
             table.varchar('description', 256)
             table.boolean('completed')
-            .notNullable()
             .defaultTo(false);
         })
 
@@ -17,6 +16,7 @@ exports.up = function(knex) {
         .createTable('resource', table => {
             table.increments();
             table.varchar('name', 256)
+            .unique()
             .notNullable();
             table.varchar('description', 256)
         })
@@ -28,7 +28,6 @@ exports.up = function(knex) {
             .notNullable();
             table.varchar('notes', 256)
             table.boolean('completed')
-            .notNullable()
             .defaultTo(false);
             table.integer('project_id')
             .notNullable()
@@ -61,5 +60,6 @@ exports.down = function(knex) {
         .dropTableIfExists('project')
         .dropTableIfExists('resource')
         .dropTableIfExists('task')
+        .dropTableIfExists('project_resources')
     );
 };

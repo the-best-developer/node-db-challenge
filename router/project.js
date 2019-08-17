@@ -71,8 +71,10 @@ router.get('/project', async (req, res) => {
 // ##########
 
 // ##### POST #####
-router.post('/task', async (req, res) => {
-    const taskData = req.body;
+router.post('/task/:id', async (req, res) => {
+    let taskData = req.body;
+    const { id } = req.params;
+    taskData.project_id = id;
 
     try {
         const addedTask = await db('task').insert(taskData);
@@ -87,14 +89,16 @@ router.post('/task', async (req, res) => {
 router.get('/task', async (req, res) => {
     
     try {
-        let tasks = await db('task');
+        let tasks = await db('task as tsk')
+        .join('project as prjt', 'prjt.id', '=', 'tsk.project_id')
+        .select('tsk.*', 'prjt.name as project_name', 'prjt.description as project_description')
         
-        res.json(
-            tasks.map((task) => {
-                task.completed = !!task.completed;
-                return task;
-            })
-        );
+        tasks = tasks.map((task) => {
+            task.completed = !!task.completed;
+            return task;
+        })
+
+        res.json(tasks ? tasks : null)
     }
     catch (err) {
         res.status(500).json({ message: err.message });
