@@ -11,6 +11,12 @@ exports.up = function(knex) {
             .notNullable()
             .defaultTo(false);
         })
+        .createTable('resources', table => {
+            table.increments();
+            table.varchar('name', 256)
+            .notNullable();
+            table.varchar('description', 256)
+        })
     );
 };
 
