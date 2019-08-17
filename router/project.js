@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../data/schemes.js');
+const db = require('../projectDb.js');
 
 router.get('/', async (req, res) => {
     
@@ -12,3 +12,5 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+module.exports = router;
